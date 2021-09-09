@@ -2,24 +2,21 @@
 Library    String
 
 *** Variables ***
-#${s1}=  ${1}
 
 *** Test Case ***
 Test Sequence
-    ${num}=  Sequence  ${17}
+    ${num}=  Sequence  ${3}
       
 *** Keywords ***
 Sequence  [Arguments]  ${num}
-    ${s1}=  set variable  ${1}
-    FOR  ${i}  IN RANGE  2   ${num}
+    ${s1}=  set variable  ${EMPTY}
+    FOR  ${i}  IN RANGE  1   ${num} + 1
         ${ostatok}=  evaluate  ${i}%${2}
-        IF  ${ostatok}==1
-            ${s1}=  evaluate  "${s1}"+"${i}"
-            ${s1}=  Regularity  ${s1}    
-        ELSE
-            ${s1}=  evaluate  "${s1}"+"${i}" 
-        END    
-        log to console  ${s1}
+        ${s1}=  evaluate  "${s1}"+"${i}"
+        IF  ${ostatok}==1    
+            ${s1}=  Regularity  ${s1}
+        END
+        log to console  \r\t\t${s1} 
     END
     [Return]  ${s1}
 
