@@ -9,21 +9,24 @@ ${winter}       Это Зима
 
 
 *** Test Case ***
+Test 
+    ${x}=  Month  ${12}
+
 Test Spring
-    ${x}=  Month  ${3}
-    Should Be Equal As Strings  ${x}  ${spring}
+    ${y}=  Month  ${3}
+    Should Be Equal As Strings  ${y}  ${spring}
 
 Test Summer
-    ${x}=  Month  ${7}
-    Should Be Equal As Strings  ${x}  ${summer}
+    ${z}=  Month  ${7}
+    Should Be Equal As Strings  ${z}  ${summer}
 
 Test Autumn
-    ${x}=  Month  ${10}
-    Should Be Equal As Strings  ${x}  ${autumn}
+    ${a}=  Month  ${10}
+    Should Be Equal As Strings  ${a}  ${autumn}
 
 Test Winter
-    ${x}=  Month  ${12}
-    Should Be Equal As Strings  ${x}  ${winter}
+    ${b}=  Month  ${12}
+    Should Be Equal As Strings  ${b}  ${winter}
 
 Test Other Values
     Run Keyword And Expect Error  Значение слишком велико  Month  ${13}
@@ -40,16 +43,17 @@ Month  [Arguments]  ${m}
     Run keyword if  ${rounded1} != ${m}  Fail  Значение не целое
     Run keyword if  ${m}== ${0}  Fail  Значение равно 0
     Should Be True  ${m}<=12  Значение слишком велико
-    FOR  ${i}  IN RANGE   1
+    FOR  ${i}  IN RANGE   2
         IF  ${m}>=3 and ${m}<=5
             ${result}=  set variable  ${spring}
         ELSE IF  ${m}>=6 and ${m}<=8
             ${result}=  set variable  ${summer}
         ELSE IF  ${m}>=9 and ${m}<=11
             ${result}=  set variable  ${autumn}   
-        ELSE IF  ${m}<=12 and ${m}>=1
+        ELSE IF  ${m}>=12 or ${m}<=2
             ${result}=  set variable  ${winter} 
         END
     END
+    log to console  ${result}
     [Return]  ${result}
       
