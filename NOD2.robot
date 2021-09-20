@@ -1,14 +1,12 @@
 *** Settings ***
 
 *** Variables ***
+${a}   100
+${b}   75
 
 *** Test Case ***                                       
 Test NOD                                 
-    ${y}=  NOD   ${4}  ${24}   
-    
-
-Test NOK
-    ${x}=  NOK  ${100}  ${75}
+    ${y}=  NOD   ${a}  ${b}       
 
 Test Nagative NOD
     Run Keyword And Expect Error  Значение аргумента отрицательное  NOD  ${-7}  ${-5}  
@@ -19,6 +17,7 @@ Test Nagative NOD
                           
 *** Keywords ***
 NOD  [Arguments]  ${a}  ${b}
+    ${ab}=  Create List   ${a}   ${b}
     Should Be True   ${a}>=0 and ${b}>=0  Значение аргумента отрицательное
     ${rounded1}=  Convert To Integer  ${a}
     ${rounded2}=  Convert To Integer  ${b}
@@ -33,10 +32,12 @@ NOD  [Arguments]  ${a}  ${b}
         END    
         Exit For Loop If  ${a}==${b}
     END 
+    ${nod}=  set variable  ${b}
     log to console  \n NOD = ${a}
+    NOK  ${ab}[0]  ${ab}[1]  ${nod}
     [Return]  ${b}
 
 NOK  [Arguments]  ${a}  ${b}  ${c}  
-    ${nok}=  evaluate  ${a}*${b}/${nod}
+    ${nok}=  evaluate  ${a}*${b}/${c}
     log to console  NOK = ${nok}
     [Return]  ${nok}
