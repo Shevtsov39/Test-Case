@@ -8,7 +8,7 @@ ${fourth}       Четвертая четверть
 
 *** Test Case ***
 Test Quarter
-    ${x}=  Quarter  ${0}  ${0}
+    ${x}=  Quarter  ${1}  ${7}
     Run Keyword And Expect Error  Точка находится в начале координат  Quarter  ${0}  ${0}
     Run Keyword And Expect Error  Точка находится на оси X  Quarter  ${2}  ${0}
     Run Keyword And Expect Error  Точка находится на оси X  Quarter  ${-2}  ${0}
