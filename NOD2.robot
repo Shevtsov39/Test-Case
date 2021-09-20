@@ -4,9 +4,11 @@
 
 *** Test Case ***                                       
 Test NOD                                 
-    ${y}=  NOD   ${0}  ${0}   
-    ${nod}=  set variable  ${y}
-    ${x}=  NOK  ${100}  ${75}  ${nod}
+    ${y}=  NOD   ${4}  ${24}   
+    
+
+Test NOK
+    ${x}=  NOK  ${100}  ${75}
 
 Test Nagative NOD
     Run Keyword And Expect Error  Значение аргумента отрицательное  NOD  ${-7}  ${-5}  
@@ -30,11 +32,11 @@ NOD  [Arguments]  ${a}  ${b}
             ${b}=  evaluate  ${b}-${a} 
         END    
         Exit For Loop If  ${a}==${b}
-    END  
+    END 
     log to console  \n NOD = ${a}
     [Return]  ${b}
 
-NOK  [Arguments]  ${a}  ${b}  ${nod}  
+NOK  [Arguments]  ${a}  ${b}  ${c}  
     ${nok}=  evaluate  ${a}*${b}/${nod}
     log to console  NOK = ${nok}
     [Return]  ${nok}
