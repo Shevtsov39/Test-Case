@@ -3,6 +3,7 @@
 *** Variables ***
 ${out}            Точка лежит вне окружности
 ${in}             Точка лежит в окружности
+${on}             Точка лежит на окружности
 
 *** Test Case ***
 Test Radius
@@ -14,6 +15,9 @@ Test Radius
 
     ${z}=  Radius   ${5}  ${6}  ${4} 
     Should Be Equal As Strings  ${z}  ${out} 
+
+    ${f}=  Radius  ${4}  ${3}  ${5}
+    Should Be Equal As Strings  ${f}  ${on}
 
 Test Negative Radius
     Run Keyword And Expect Error  Значения равны 0  Radius  ${0}  ${0}  ${0}
@@ -30,9 +34,9 @@ Radius  [Arguments]  ${a}  ${b}  ${r}
     ${q}=  evaluate  math.sqrt(${a}**2+${b}**2)                #Длина гипотенузы, то есть длина от созданной точки до начала координат
         IF  ${r} < ${q}
             ${result}=  set variable  ${out}
-            #log to console  ${out}
+        ELSE IF  ${r}==${q}   
+            ${result}=  set variable  ${on}
         ELSE
             ${result}=  set variable  ${in}
-            #log to console    ${in}
         END
     [Return]  ${result}
