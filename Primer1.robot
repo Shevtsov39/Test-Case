@@ -5,17 +5,18 @@ Library    String
 
 *** Test Case ***
 Test Regularity
-     ${text}=  Regularity  qwerty12   
+     ${text}=  Regularity  qwerty12      
 
 
 *** Keywords ***
-Regularity  [Arguments]  ${text}
+Regularity  [Arguments]  ${text}                      #Функция, которая прибавляет к каждому последующему значению это значение Пример= 1 22 333 4444 55555
     ${sum}=  set variable  ${EMPTY}
     ${len}=  Get length  ${text}
-     FOR    ${i}    IN RANGE    0   ${len} + 1
-         ${i-1}=  evaluate  ${i}-1
-         ${b}=  get substring  ${text}  ${i-1}  ${i}
+     FOR  ${i}    IN RANGE    ${len}
          FOR  ${j}  IN RANGE  0  ${i}
+              ${i-1}=  evaluate  ${i}-1
+              ${b}=  get substring  ${text}  ${i-1}  ${i}
+              log to console  ${i}, ${b}, ${i-1}
               ${sum}=  evaluate  "${sum}"+"${b}"
          END
      END   

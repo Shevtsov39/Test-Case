@@ -5,7 +5,7 @@ Library   String
 
 *** Test Case ***
 Test FindEven  
-    ${x}=  FindEven  ${579952}
+    ${x}=  FindEven  ${0579952}
 
 Test Negative Even
     Run Keyword And Expect Error  Значение аргумента отрицательное  FindEven  ${-7}
@@ -32,8 +32,6 @@ FindEven  [Arguments]  ${num}
             Run keyword  Fail  Значение содержит 0
         ELSE IF  ${even}==0
             ${sum}=  evaluate  "${sum}"+"${b}."
-        #ELSE IF  "${sum}" == "${EMPTY}"
-        #    Run keyword  Fail  Значение не содержит четные числа
         END
     END
     Run keyword if  "${sum}" == "${EMPTY}"  Fail  Значение не содержит четные числа

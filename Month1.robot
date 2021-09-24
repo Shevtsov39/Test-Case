@@ -10,7 +10,7 @@ ${winter}       Это Зима
 
 *** Test Case ***
 Test 
-    ${x}=  Month  ${12}
+    ${x}=  Month  ${2}
 
 Test Spring
     ${y}=  Month  ${3}
@@ -44,14 +44,16 @@ Month  [Arguments]  ${m}
     Run keyword if  ${m}== ${0}  Fail  Значение равно 0
     Should Be True  ${m}<=12  Значение слишком велико
     FOR  ${i}  IN RANGE   2
-        IF  ${m}>=3 and ${m}<=5
-            ${result}=  set variable  ${spring}
+        IF  ${m}<=2 or ${m}>=12
+            ${result}=  set variable  ${winter}
         ELSE IF  ${m}>=6 and ${m}<=8
             ${result}=  set variable  ${summer}
         ELSE IF  ${m}>=9 and ${m}<=11
             ${result}=  set variable  ${autumn}   
-        ELSE IF  ${m}>=12 or ${m}<=2
-            ${result}=  set variable  ${winter} 
+        ELSE IF  ${m}>=3 and ${m}<=5
+            ${result}=  set variable  ${spring}
+        ELSE 
+            Fail
         END
     END
     log to console  ${result}

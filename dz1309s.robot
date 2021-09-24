@@ -5,11 +5,11 @@
 
 *** Test Case ***
 Test Integer  
-    ${x}=  Integer  ${29}
+    ${x}=  Integer  ${24}
 
 *** Keywords ***
-Integer  [Arguments]  ${num}
-    ${polovina}=  evaluate  ${0.5}*${num}
+Integer  [Arguments]  ${num}                                                #Разложение числа на множители
+    ${polovina}=  evaluate  ${0.5}*${num}             
     ${factors}=  set variable  ${EMPTY}
     FOR  ${i}  IN RANGE  2  ${polovina} + 1
         ${i1}=  convert to integer  ${i}
