@@ -25,12 +25,12 @@ Test Negative Radius
 Roots  [Arguments]  ${a}  ${b}  ${c}
     Run keyword if  ${a}== ${0} and ${b}==${0} and ${c}==${0}  Fail  Значения равны 0
     Run keyword if  ${a}== ${0} or ${b}==${0} or ${c}==${0}  Fail  Одно из значений равно 0
-    ${d}=  evaluate  ${b}**2-4*${a}*${c}
+    ${d}=  evaluate  ${b}**2-4*${a}*${c}                                            #Поиск дискриминанта
     log to console  ${d}
     IF  ${d} > 0
-        ${x1}=  evaluate  (-${b}+math.sqrt(${d}))/(2*${a})
+        ${x1}=  evaluate  (-${b}+math.sqrt(${d}))/(2*${a})                          #math.sqrt ищет корень числа
         ${x2}=  evaluate  (-${b}-math.sqrt(${d}))/(2*${a})
-        ${x1}=  evaluate  "%.3f" % ${x1}
+        ${x1}=  evaluate  "%.3f" % ${x1}                                            # "%.3f" % указывает количество знаков после запятой
         ${x2}=  evaluate  "%.3f" % ${x2}
         log to console  ${x1}
         log to console  ${x2}  
