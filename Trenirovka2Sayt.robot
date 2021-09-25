@@ -17,7 +17,7 @@ Test browser
     Go To  ${url2}
     Input Text                  id:fakeArea  ${text}
     Click Element               id:textSpeaker
-    Sleep                       1
-    Wait For Condition	style = document.getElementById('textSpeaker').style.toString(); alert(style); return style.search('state-silent') != -1  60                         
+    Sleep                       9
+    #Wait For Condition	style = document.getElementById('textSpeaker').style.toString(); alert(style); return style.search('state-silent') != -1  60                         
     Close Browser
 
