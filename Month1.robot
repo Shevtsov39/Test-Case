@@ -10,7 +10,7 @@ ${winter}       Это Зима
 
 *** Test Case ***
 Test 
-    ${x}=  Month  ${2}
+    ${x}=  Month  ${12}
 
 Test Spring
     ${y}=  Month  ${3}

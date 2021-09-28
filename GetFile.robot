@@ -1,19 +1,18 @@
 *** Settings ***
 Library         OperatingSystem
 Library         String
+
 *** Variables ***
 
 
 *** Test Cases ***
-Read File
-    File
+Test Get File
+    File  
+
     
 *** Keywords ***
 File
-    log to console  \t
-    ${file}=  set variable  Какой-то Текст  
-    ${file1}  Get File  КомандыGit.txt
-    @{read}  Create List  ${file1}
-    @{lines}  Split To Lines  @{read}
-    Append To File  C:/tests/Primer/КомандыGit.txt   ${file1}
-    log to console  \t${lines}  no_newline=true
+    ${text}=  Get File  КомандыGit.txt
+    log to console  ${text}
+    ${low} =	Generate Random String	6	[UPPER]
+    log to console  ${low}

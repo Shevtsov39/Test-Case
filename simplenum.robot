@@ -9,17 +9,19 @@ Test Simple Numbers
     
 *** Keywords ***
 Simple Numbers  [Arguments]  ${num}
-    ${sum}=  evaluate  "${EMPTY}"
-    ${sum2}=  evaluate  "${EMPTY}"
+    ${sum}=  set variable  ${EMPTY}
+    ${del}=  set variable  ${2}
     FOR  ${i}  IN RANGE  2   ${num} + 1
-        FOR  ${j}  IN RANGE  2   ${i}
-            ${res}=  evaluate  ${i}%${j}
-            IF  ${res}==0
-                ${sum2}=  evaluate  "${sum2}"+"${res}"
-            ELSE
-                ${sum}=  evaluate  "${sum}"+"${i}"
+        ${k}=  set variable  ${0}
+        FOR  ${j}  IN RANGE  1   ${i}
+            ${res}=  evaluate  ${num}%${j}
+            IF  ${res}>0
+                ${k}=  evaluate  ${k}+${1}
             END
+                IF  ${k}==2
+                    ${sum}=  evaluate  "${sum}"+"${i},"
+                    Exit For Loop
+                END
         END
     END
     log to console  ${sum}
-    #log to console  ${sum2}
