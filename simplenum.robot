@@ -1,27 +1,17 @@
 *** Settings ***
  
 *** Variables ***
-
+@{LIST}         a    b    c
 
 *** Test Cases ***
-Test Simple Numbers
-    ${x}  Simple Numbers  ${77}
-    
-*** Keywords ***
-Simple Numbers  [Arguments]  ${num}
-    ${sum}=  set variable  ${EMPTY}
-    ${del}=  set variable  ${2}
-    FOR  ${i}  IN RANGE  2   ${num} + 1
-        ${k}=  set variable  ${0}
-        FOR  ${j}  IN RANGE  1   ${i}
-            ${res}=  evaluate  ${num}%${j}
-            IF  ${res}>0
-                ${k}=  evaluate  ${k}+${1}
-            END
-                IF  ${k}==2
-                    ${sum}=  evaluate  "${sum}"+"${i},"
-                    Exit For Loop
-                END
-        END
+#Manage index manually
+#    ${index} =    Set Variable    -1
+#    FOR    ${item}    IN    @{LIST}
+#        ${index} =    Evaluate    ${index} + 1
+#        log to console    ${index}    ${item}
+#    END
+
+For-in-enumerate
+    FOR    ${index}    ${item}    IN ENUMERATE    @{LIST}
+        log to console    ${index}    ${item}
     END
-    log to console  ${sum}
