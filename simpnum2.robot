@@ -38,7 +38,6 @@ Test For Prime  [Arguments]   ${n}  @{primes}
             ${result}=  set variable  ${false}
             Exit For Loop
         END
-        #log to console    ${i}
     END
     [Return]  ${result}
 
