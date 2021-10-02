@@ -24,21 +24,12 @@ Prime Numbers  [Arguments]  ${count}
     END
 
 Test For Prime  [Arguments]   ${n}  @{primes}
-    ${half}=  evaluate  ${n}/2
-    ${result}=  set variable  ${false}
+    ${f}=  set variable  ${true}
     FOR  ${i}  IN  @{primes}             
         ${ostatok}=  evaluate  ${n}%${i}                  #Остаток от деления
         IF  ${ostatok} == 0
-            ${result}=  set variable  ${false}
-            Exit For Loop
-        ELSE IF  ${i} > ${half}
-            ${result}=  set variable  ${true} 
-            Exit For Loop
-            Continue for Loop
-        ELSE IF  ${ostatok} != 0
-            Continue For Loop
+            ${f}=  set variable  ${false}
+            Exit For Loop    
         END
     END
-    [Return]  ${result}
-
-        
+    [Return]  ${f}
