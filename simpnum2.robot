@@ -6,7 +6,7 @@ Library     Collections
 
 *** Test Cases ***
 Test Prime Numbers
-    Prime Numbers  ${100}
+    Prime Numbers  ${50}
     log to console  ${primes}
 
 *** Keywords ***
@@ -26,17 +26,17 @@ Prime Numbers  [Arguments]  ${count}
 Test For Prime  [Arguments]   ${n}  @{primes}
     ${half}=  evaluate  ${n}/2
     ${result}=  set variable  ${false}
-    FOR  ${i}  IN  @{primes}
-        ${ostatok}=  evaluate  ${n}%${i}            #Остаток от деления
-        IF  ${i} > ${half}
-            ${result}=  set variable  ${true}  
-            Exit For Loop
-        END 
-        IF  ${ostatok} != 0
-            Continue for Loop
-        ELSE IF  ${ostatok} == 0
+    FOR  ${i}  IN  @{primes}             
+        ${ostatok}=  evaluate  ${n}%${i}                  #Остаток от деления
+        IF  ${ostatok} == 0
             ${result}=  set variable  ${false}
             Exit For Loop
+        ELSE IF  ${i} > ${half}
+            ${result}=  set variable  ${true} 
+            Exit For Loop
+            Continue for Loop
+        ELSE IF  ${ostatok} != 0
+            Continue For Loop
         END
     END
     [Return]  ${result}
