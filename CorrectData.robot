@@ -3,6 +3,7 @@ Documentation       Написать функцию, которая по вхо�
 ...                 (32 мая или 29 февраля 1901 года быть не может)
 ...                 Результат работы: True или False.
 Library         String
+Library         DateTime
 
 *** Variables ***
 @{longM}               1  3  5  7  8  10  12
@@ -10,54 +11,34 @@ Library         String
 
 *** Test Case ***
 Test for Leap2
-        ${result}  Other Values  ${31}  ${12}  ${2017}
-        Should Be True  ${result}   ${true}
+        ${result}  Is Date Correct  ${31}  ${12}  ${2017}
+        Should Be True  ${result}
         log to console  Год - ${result}
         
-        ${result}  Other Values  ${31}  ${5}  ${2000}
-        Should Be True  ${result}   ${false}
+        ${result}  Is Date Correct  ${31}  ${5}  ${2000}
+        Should Be True  ${result}   
         log to console  Год - ${result}
 
-        ${result}  Other Values  ${29}  ${2}  ${2000}
-        Should Be True  ${result}   ${true}
+        ${result}  Is Date Correct  ${29}  ${2}  ${2000}
+        Should Be True  ${result}   
         log to console  Год - ${result}
 
-        ${result}  Other Values  ${29}  ${2}  ${2003}
+Negative Tests
+        ${result}  Is Date Correct  ${29}  ${2}  ${2003}
         log to console  Год - ${result}
-        #Should Be True  ${result}   ${false}
-        
+        Should Not Be True  ${result}   
 
-        ${result}  Other Values  ${29}  ${0}  ${1600}
+Test Invalid Values        
+        ${result}  Is Date Correct  ${29}  ${0}  ${1600}
         log to console  Год - ${result}
-        #Should Be True  ${result}   ${false}
+        Should Not Be True  ${result}
 
-        ${result}  Other Values  ${29.5}  ${2}  ${2021}
-        log to console  Год - \n ${result}
-        #Should Be True  ${result}   ${false}
+        ${result}  Is Date Correct  ${29.5}  ${2}  ${2021}
+        log to console  Год - ${result}
+        Should Not Be True  ${result}
 
 *** Keywords ***
-Condition month2  [Arguments]  ${month}                 # Проверяем на короткие месяцы
-        FOR  ${i}  IN  @{shortM}
-            IF  ${month} == ${i}
-                Return from Keyword  ${false}
-            ELSE
-                Continue For Loop
-            END
-        END  
-        [Return]  ${true}
-
-Condition month1  [Arguments]  ${month}                 # На длинные
-        FOR  ${i}  IN  @{longM}                                                     
-            IF  ${month} == ${i}
-                Return from Keyword  ${true}
-            ELSE
-                Continue For Loop
-            END
-        END  
-        ${result}  Condition month2  ${month}   
-        [Return]  ${result}                             # Возвращаем true если месяц длинный, false если короткий
-
-Visokosniy Year2  [Arguments]  ${year}
+Is Leap Year  [Arguments]  ${year}
         ${leap}=  evaluate  ${year}%${4}
         IF  ${leap} != 0
             Return from Keyword  ${false}
@@ -69,40 +50,21 @@ Visokosniy Year2  [Arguments]  ${year}
         END
         [Return]  ${true}
 
-Condition Month  [Arguments]  ${day}  ${month}  ${year}
-        ${result1}  Visokosniy Year2  ${year}
-        IF  ${month}==2 and ${result1}==${true}                      # Если год високосный и месяц февраль
-            IF  ${day} <= 29
-                Return from Keyword  ${true} 
-            ELSE
-                Return from Keyword  ${false}
-            END
+Is Date Correct  [Arguments]  ${day}  ${month}  ${year}
+        ${result}  Check Days for Month  ${day}  ${month}  ${year}
+        Return from Keyword If  not ${result}  ${false}
+        ${result1}  Is Leap Year  ${year}
+        IF  ${month}==2 and ((${result1} and ${day} > 29 ) or (not ${result1} and ${day} > 28)) 
+            Return from Keyword  ${false} 
         END
-        IF  ${month}==2 and ${result1}==${false}                     # Если годе не високосный и месяц февраль
-            IF  ${day} <= 28
-                Return from Keyword  ${true} 
-            ELSE
-                Return from Keyword  ${false}
-            END    
+        IF  ${month}==${4} or ${month}==${6} or ${month}==${9} or ${month}==${11}
+            Return from Keyword If  ${day} > 30  ${false}
+        ELSE
+            Return from Keyword If  ${day} > 31  ${false}
         END
-        ${result2}  Condition month1  ${month}
-        IF  ${result2}==${false}                                     # Если месяц короткий
-            IF  ${day} > 30 
-                Return from Keyword  ${false}
-            ELSE
-                Return from Keyword  ${true}
-            END       
-        END
-        IF  ${result2}==${true}                                      # Если месяц длинный
-            IF  ${day} <= 31
-                Return from Keyword  ${true}
-            ELSE
-                Return from Keyword  ${false}
-            END
-        END
-        [Return]  ${false}
+        [Return]  ${true}
 
-Other Values  [Arguments]  ${day}  ${month}  ${year}
+Check Days for Month  [Arguments]  ${day}  ${month}  ${year}
     ${result}=  set variable  ${true}
     ${rounded1}=  convert to integer  ${day}
     ${rounded2}=  convert to integer  ${month}
@@ -112,11 +74,15 @@ Other Values  [Arguments]  ${day}  ${month}  ${year}
     END
     IF  ${day} <= ${0} or ${month} <= ${0} or ${year} <= ${0}
         ${result}=  set variable  ${false}
-    END
-    IF  ${day} > ${31} or ${month} > ${12} or ${year} > ${2022}
+    END	
+    IF  ${day} > ${31} or ${month} > ${12}
         ${result}=  set variable  ${false}
     END
-    IF  ${result}==${true}
-        ${result}  Condition Month  ${day}  ${month}  ${year}
+    ${date} =	Get Current Date
+    ${dateD} =	Convert Date	${date}	  result_format=%d
+    ${dateM} =	Convert Date	${date}	  result_format=%m
+    ${dateY} =	Convert Date	${date}	  result_format=%Y
+    IF  ${day} > ${dateD} and ${month} > ${dateM} and ${year} > ${dateY}
+        ${result}=  set variable  ${false}
     END
     [Return]  ${result}
