@@ -5,12 +5,8 @@
 
 *** Test Case ***
 Test Swap                       # Работает только с числами
-    ${a}=  set variable  8
-    ${b}=  set variable  6
-    Swap    ${a}   ${b}
-    ${x}=  set variable  Hello
-    ${y}=  set variable  World
-    SwapSecond    ${x}   ${y}
+    Swap    ${8}   ${6}
+    SwapSecond    Hello   World
 
 *** Keywords ***
 Swap  [Arguments]  ${first}  ${second}          #Первый вариант
