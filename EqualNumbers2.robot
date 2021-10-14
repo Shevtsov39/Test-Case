@@ -62,3 +62,12 @@ Number One  [Arguments]  ${num}
     ${seven}=  evaluate  ${num}//1000000%10
     log to console  1) - ${first} , 2) - ${second} , 3) - ${third} , 4) - ${fourth} , 5) - ${five} , 6) - ${six} , 7) - ${seven}
 
+
+Equal Digits  [Arguments]  ${mult}
+    FOR  ${i}  IN  ${mult}
+        ${lastDigit}=  evaluate  ${mult}%10
+        ${mult}=  evaluate  ${mult}//10
+        IF  ${mult}==0
+            Exit For Loop
+        END
+    END

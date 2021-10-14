@@ -32,12 +32,12 @@ Clone File  [Arguments]  ${inputFile}  ${outputFile}
     Remove File  ${outputFile}                                             #Удаляем файл перед тем как вставить в него текст
     #File Should Not Exist  ${outputFile}  Выходной файл существует
         FOR  ${i}  ${line}  IN ENUMERATE  @{lines}  start=1
-            IF  "${line}" == "${EMPTY}"
-                ${rm}=  Remove String  ${line}  ${line}
-                 #${i}=  evaluate  ${i}-${1}
-                 continue for loop 
-            END   
-            ${sum1}=  Set Variable  ${i}) ${line}\n
+            # IF  "${line}" == "${EMPTY}"
+            #     ${rm}=  Remove String  ${line}  ${line}
+            #      #${i}=  evaluate  ${i}-${1}
+            #      continue for loop 
+            # END   
+            ${sum1}=  Set Variable  ${i})${line}\n
             Append To File  ${outputFile}  ${sum1}
             log to console  ${sum1}
         END
