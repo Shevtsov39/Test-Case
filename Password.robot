@@ -4,7 +4,7 @@ Documentation       Задача
 ...                 1. Пароль содержит строчные латинские буквы
 ...                 2. Пароль содержит заглавные латинские буквы
 ...                 3. Пароль содержит цифры
-...                 4. Символы: ! # $ % & - ' ( ) * +
+...                 4. Символы: ! " # $ % & - ' ( ) * +
 ...                 5. Длина пароля не менее 8 символов
 ...                 Требуется по данному паролю определить, сколько критериев криптостойкости выполнено.
 ...                 Входные данные:
@@ -21,7 +21,8 @@ ${a-z}          abcdefghijklmnopqrstuvwxyz
 
 *** Test Case ***
 Check Password
-    ${result}   Password     A#bc23$$$
+    ${result}   Password     (9)9)Aa
+
 
 Test Others Password
     ${result}   Password     1aA
@@ -33,11 +34,15 @@ Test Others Password
     ${result}   Password     AAAaaaAAA
     Should Be Equal  ${result}  ${3}
 
-    ${result}   Password     A#bc23$$$
+    ${result}   Password     Ab#c23$$$
     Should Be Equal  ${result}  ${5}
 
 *** Keywords ***
 Password  [Arguments]  ${pas}
+    ${flag1}=  set variable  ${0}
+    ${flag2}=  set variable  ${0}
+    ${flag3}=  set variable  ${0}
+    ${flag4}=  set variable  ${0}
     ${a-zUpper}=  Convert To Upper Case  abcdefghijklmnopqrstuvwxyz
     ${flag}=  set variable  ${0}
     ${newflag}=  set variable  ${0}
@@ -52,47 +57,55 @@ Password  [Arguments]  ${pas}
         ${n}=  get substring  @{symbol}  ${j}  ${j+1}
         FOR  ${i}  IN  @{listpas}
             IF  "${i}" == "${n}" 
-                ${flag}=  evaluate  ${flag}+${1}
+                ${flag1}=  evaluate  ${flag1}+${1}
+                Exit for Loop
             END
         END
-    END
-    IF  ${flag} > 0
-        ${newflag}=  evaluate  ${newflag}+${1}
+        IF  ${flag1} == 1
+            ${newflag}=  evaluate  ${newflag}+${1}
+            Exit for Loop
+        END
     END
     FOR  ${j}  IN RANGE    10
         ${j+1}=  evaluate  ${j}+${1}
         ${n}=  get substring  @{1-9}  ${j}  ${j+1}
         FOR  ${i}  IN  @{listpas}    
             IF  "${i}" == "${n}"
-                ${flag}=  evaluate  ${flag}+${1} 
+               ${flag2}=  evaluate  ${flag2}+${1}
+               Exit for Loop
             END
         END
-    END
-    IF  ${flag} > 0
-        ${newflag}=  evaluate  ${newflag}+${1}
+        IF  ${flag2} == 1
+            ${newflag}=  evaluate  ${newflag}+${1}
+            Exit for Loop
+        END
     END
     FOR  ${j}  IN RANGE    27
         ${j+1}=  evaluate  ${j}+${1}
         ${n}=  get substring  ${a-z}  ${j}  ${j+1}
         FOR  ${i}  IN  @{listpas} 
             IF  "${i}" == "${n}"
-                ${flag}=  evaluate  ${flag}+${1}
+                ${flag3}=  evaluate  ${flag3}+${1}
+                Exit for Loop
             END
         END
-    END
-    IF  ${flag} > 0
-        ${newflag}=  evaluate  ${newflag}+${1}
+        IF  ${flag3} == 1
+            ${newflag}=  evaluate  ${newflag}+${1}
+            Exit for Loop
+        END
     END
     FOR  ${j}  IN RANGE    27
         ${j+1}=  evaluate  ${j}+${1}
         ${n}=  get substring  ${a-zUpper}  ${j}  ${j+1}
         FOR  ${i}  IN  @{listpas}
             IF  "${i}" == "${n}"
-                ${flag}=  evaluate  ${flag}+${1}
+                ${flag4}=  evaluate  ${flag4}+${1}
+                Exit for Loop
             END
         END
-    END
-    IF  ${flag} > 0
-        ${newflag}=  evaluate  ${newflag}+${1}
+        IF  ${flag4} == 1
+            ${newflag}=  evaluate  ${newflag}+${1}
+            Exit for Loop
+        END
     END
     [Return]  ${newflag}
