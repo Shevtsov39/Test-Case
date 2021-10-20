@@ -7,5 +7,10 @@ pipeline {
                 git credentialsId: 'github', url: 'https://github.com/Shevtsov39/Test-Case'
             }
         }
+        stage('Running Robot') {
+            steps {
+                sh 'robot /home/vsevolod/Test-Case'
+            }
+        }    
     }
 }
