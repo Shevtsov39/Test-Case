@@ -6,7 +6,7 @@ Library         String
 
 *** Test Case ***
 Test The Same 
-    New Version   
+    #New Version   
 
     Years 
 
@@ -39,7 +39,7 @@ Years
     END
  
 New Version
-    FOR  ${year}  IN RANGE  1910   1921
+    FOR  ${year}  IN RANGE  1   2000
         FOR  ${month}  IN RANGE  1   13
             IF  ${month} < 10
                 ${month}=  set variable  0${month}
