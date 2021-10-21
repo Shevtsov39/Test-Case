@@ -7,9 +7,9 @@ pipeline {
                 git credentialsId: 'github', url: 'https://github.com/Shevtsov39/Test-Case'
             }
         }
-        stage('Running Robot') {
+        stage('Email Notification') {
             steps {
-                sh 'robot /home/vsevolod/Test-Case'
+                mail bcc: '', body: 'Hi, second job working', cc: '', from: '', replyTo: '', subject: 'Second Job', to: 'progoodbro@gmail.com'
             }
         }    
     }
