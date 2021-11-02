@@ -18,3 +18,5 @@ foo.txt
 *.xml
 *.png
 *.txt
+Secrets/
+devdata/
