@@ -9,6 +9,11 @@ pipeline {
                 git credentialsId: 'github', url: 'https://github.com/Shevtsov39/Test-Case'
             }
         }
+        stage('Seup Robot') {
+            steps {
+                robot 'C:/tests/Primer'
+            }
+        }
         stage('Email Notification') {
             steps {
                 mail bcc: '', body: 'Hi, second job working', cc: '', from: '', replyTo: '', subject: 'Second Job', to: 'progoodbro@gmail.com'
