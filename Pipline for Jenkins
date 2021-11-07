@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label "Win10"
+    }
 
     stages {
         stage('Git Checkout') {
