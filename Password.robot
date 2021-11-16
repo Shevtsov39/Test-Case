@@ -15,65 +15,87 @@ Library     String
 Library     Collections
 
 *** Variables ***
-@{symbol}       !#$%&-'()*+"""
+${symbol}       !#$%&-'()*+"""
 ${a-z}          abcdefghijklmnopqrstuvwxyz
-@{1-9}          123456789
+${1-9}          123456789
 
 *** Test Case ***
 Check Password
-    ${result}   Better Version     AaBbCc12
-    log to console  ${result}
+    ${result}   Verify Password     AaBbC123()
+    Should Be Equal  ${result}  ${5}
 
 Test Others Password
-    ${result}   Better Version     1aA
+    ${result}   Verify Password     1aA
     Should Be Equal  ${result}  ${3}
     log to console  ${result}
-    ${result}   Better Version     AaBbCc12
+    ${result}   Verify Password     AaBbCc12
     Should Be Equal  ${result}  ${4}
     log to console  ${result}
-    ${result}   Better Version     AAAaaaAAA
+    ${result}   Verify Password     AAAaaaAAA
     Should Be Equal  ${result}  ${3}
     log to console  ${result}
-    ${result}   Better Version     Ab#c23$$$
+    ${result}   Verify Password     Ab#c23$$$
     Should Be Equal  ${result}  ${5}
     log to console  ${result}
 
 *** Keywords ***
-Better Version  [Arguments]  ${pas}
-    ${flag}=  set variable  ${0}
-    ${len}=  get length  ${pas}                                         
-    Should Be True  ${len} < 100  Пароль слишком велик                  # Проверка длины пароля
-    IF  ${len} >= 8
-        ${flag}=  evaluate  ${flag}+${1}
+Verify Password  [Arguments]  ${pas}
+    ${i+1}=  set variable  ${0}
+    ${all}=  set variable  1234567890!#$%&-'()*+"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+    ${criterias}=  Create List  ${0}   ${0}   ${0}    ${0}
+    ${sum}=  set variable  ${0}
+    ${len}=  Get Length  ${pas}
+    FOR  ${i}  IN RANGE     ${len}
+        ${i+1}=  evaluate  ${i}+${1}
+        ${char}=  Get Substring  ${pas}  ${i}  ${i+1}
+        ${count1}=  Get Count  ${all}[0:10]  ${char}
+        ${count2}=  Get Count  ${all}[10:22]  ${char}
+        ${count3}=  Get Count  ${all}[22:48]  ${char}
+        ${count4}=  Get Count  ${all}[48:76]  ${char}
+        IF  ${count1} > 0 and ${criterias}[0]==0
+            Set List Value  ${criterias}  0  ${1}
+        ELSE IF  ${count2} > 0 and ${criterias}[1]==0
+            Set List Value  ${criterias}  1  ${1}
+        ELSE IF  ${count3} > 0 and ${criterias}[2]==0
+            Set List Value  ${criterias}  2  ${1}
+        ELSE IF  ${count4} > 0 and ${criterias}[3]==0
+            Set List Value  ${criterias}  3  ${1}
+        END
     END
-    ${a-zUpper}=  Convert To Upper Case  ${a-z}
-    @{listpas}=  Split String To Characters  ${pas}
-        FOR  ${i}  IN  @{listpas}
-            ${count1}=  Get Count  @{1-9}   ${i}
-            IF  ${count1} > 0
-                ${flag}=  evaluate  ${flag}+${1}
-                Exit For Loop
-            END
+    ${sum}=  evaluate  ${criterias}[0]+${criterias}[1]+${criterias}[2]+${criterias}[3]
+    IF  ${len} >= 8
+        ${sum}=  evaluate  ${sum}+${1}
+    END
+    [Return]  ${sum}
+
+Verify Password Criterias  [Arguments]  ${pas}
+    ${A-ZUpper}=  Convert To Upper Case  ${a-z}
+    ${criterias}=  Create List  ${0}   ${0}   ${0}    ${0}
+    ${len}=  Get Length  ${pas}
+    FOR  ${i}  IN RANGE     ${len}
+        ${i+1}=  evaluate  ${i}+${1}
+        ${char}=  Get Substring  ${pas}  ${i}  ${i+1}
+        ${count}=  Get Count  ${A-ZUpper}  ${char}
+        IF  ${count} > 0 and ${criterias}[0]==0
+            Set List Value  ${criterias}  0  ${1}
         END
-        FOR  ${i}  IN  @{listpas}    
-            ${count2}=  Get Count  ${a-z}   ${i}
-            IF  ${count2} > 0
-                ${flag}=  evaluate  ${flag}+${1}
-                Exit For Loop
-            END
+        ${count}=  Get Count  ${a-z}  ${char}
+        IF  ${count} > 0 and ${criterias}[1]==0
+            Set List Value  ${criterias}  1  ${1}
         END
-        FOR  ${i}  IN  @{listpas}
-            ${count3}=  Get Count  ${a-zUpper}   ${i}
-            IF  ${count3} > 0
-                ${flag}=  evaluate  ${flag}+${1}
-                Exit For Loop
-            END
+        ${count}=  Get Count  ${1-9}  ${char}
+        IF  ${count} > 0 and ${criterias}[2]==0
+            Set List Value  ${criterias}  2  ${1}
         END
-        FOR  ${i}  IN  @{listpas}
-            ${count4}=  Get Count  @{symbol}   ${i}
-            IF  ${count4} > 0
-                ${flag}=  evaluate  ${flag}+${1}
-                Exit For Loop
-            END
+        ${count}=  Get Count  ${symbol}  ${char}
+        IF  ${count} > 0 and ${criterias}[3]==0
+            Set List Value  ${criterias}  3  ${1}
         END
-    [Return]  ${flag}
+    END
+    ${sum}=  evaluate  ${criterias}[0]+${criterias}[1]+${criterias}[2]+${criterias}[3]  
+    IF  ${len} >= 8
+        ${sum}=  evaluate  ${sum}+${1}
+    END
+    [Return]  ${sum}
+
+    
