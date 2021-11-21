@@ -4,15 +4,13 @@
 
 import random
 
-def RollDice(dice) :
-   sum = 0
-   list = []
-   for n in range(2) :
-      for i in range(1000) :
-         sum = sum + random.choice(dice)
-      list.append(sum)
-      return list
-
 dice = [1, 2, 3, 4, 5, 6]
-print(RollDice(dice))
-
+list = []
+for n in range(1000) :
+   a = random.choice(dice)
+   b = random.choice(dice)
+   sum = a + b
+   list.append(sum)
+for i in range(2,13) :
+   counter = list.count(i)
+   print("Количество выпадений",i,"=",counter)
