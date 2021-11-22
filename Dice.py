@@ -6,11 +6,13 @@ import random
 
 dice = [1, 2, 3, 4, 5, 6]
 list = []
-for n in range(1000) :
-   a = random.choice(dice)
-   b = random.choice(dice)
-   sum = a + b
+for m in range(1000) :
+   firstThrow = random.choice(dice)
+   secondThrow = random.choice(dice)
+   sum = firstThrow + secondThrow
    list.append(sum)
-for i in range(2,13) :
+for i in range(2,len(dice)*2+1) :
    counter = list.count(i)
    print("Количество выпадений",i,"=",counter)
+
+
