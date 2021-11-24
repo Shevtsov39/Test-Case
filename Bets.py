@@ -9,32 +9,45 @@
 import random
 
 def Bet() :
+   counter = 0
    sum = 100
    for i in range(100) :
+      firstBet = random.randint(1,5)
+      num = random.randint(1,36)
+      secondBet = random.randint(1,5)
+      sum = sum - firstBet - secondBet
+      firstBetResult = BetOnDigits(firstBet,num)
+      secondBetResult = EvenOdd(secondBet)
+      if firstBetResult or secondBetResult == False :
+         sum += 0
+      else :
+         sum = sum + firstBetResult + secondBetResult
       if sum != 0 :
-         firstBet = random.randint(1,5)
-         secondBet = random.randint(1,5)
-         sum = sum - firstBet - secondBet
-         BetOnDigits(firstBet)
-         EvenOdd(secondBet)
+         counter += 1
+         continue
+      else :
+         break
+   return counter
 
-
-def BetOnDigits(n) :
-   randomBet = random.randint(1,36)
+def BetOnDigits(n,num) :
+   randomBet = random.randint(0,36)
    if randomBet == 0 :
-      return randomBet
-
+      return False
+   elif randomBet == num :
+      n = n*35
+      return n
+   else :
+      return 0
 
 def EvenOdd(n) :
    randomBet = random.randint(0,36)
    ost = randomBet%2
    if randomBet == 0 :
-      return 0
-   elif ost == 0 :
-      return True
-   else :
       return False
+   elif ost == 0 :
+      n = n*2
+      return n
+   else :
+      return 0
 
 print(Bet())
-print(EvenOdd())
-print(BetOnDigits())
