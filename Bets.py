@@ -8,46 +8,52 @@
 
 import random
 
-def Bet() :
+def BetOnDigits() :
    counter = 0
    sum = 100
    for i in range(100) :
+      counter += 1
       firstBet = random.randint(1,5)
       num = random.randint(1,36)
-      secondBet = random.randint(1,5)
-      sum = sum - firstBet - secondBet
-      firstBetResult = BetOnDigits(firstBet,num)
-      secondBetResult = EvenOdd(secondBet)
-      if firstBetResult or secondBetResult == False :
-         sum += 0
-      else :
-         sum = sum + firstBetResult + secondBetResult
-      if sum != 0 :
-         counter += 1
-         continue
-      else :
-         break
+      sum -= firstBet
+      firstBetResult = Digits(firstBet,num)
+      if firstBetResult :
+         sum = sum + firstBetResult
+      if sum <= 0 :
+         break  
    return counter
 
-def BetOnDigits(n,num) :
+def BetOnOdd() :
+   counter = 0
+   sum = 100
+   for i in range(100) :
+      counter += 1
+      secondBet = random.randint(1,5)
+      parity = random.randint(1,2)
+      sum -= secondBet
+      secondBetResult = EvenOdd(secondBet,parity)
+      if secondBetResult :
+         sum = sum + secondBetResult
+      if sum <= 0 :
+         break         
+   return counter
+
+def Digits(n,num) :
    randomBet = random.randint(0,36)
-   if randomBet == 0 :
-      return False
-   elif randomBet == num :
+   if randomBet == num :
       n = n*35
       return n
    else :
       return 0
 
-def EvenOdd(n) :
+def EvenOdd(n,parity) :
    randomBet = random.randint(0,36)
    ost = randomBet%2
-   if randomBet == 0 :
-      return False
-   elif ost == 0 :
+   if parity == randomBet :
       n = n*2
       return n
    else :
       return 0
 
-print(Bet())
+print(BetOnDigits())
+print(BetOnOdd())
