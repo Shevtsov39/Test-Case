@@ -8,7 +8,6 @@ pipeline {
                 sh 'git clean -xdf'
                 sh 'git reset --hard'
                 sh 'git fetch'
-                
             }
         }
         stage('Running Robot') {
