@@ -8,52 +8,51 @@
 
 import random
 
-def BetOnDigits() :
-   counter = 0
-   sum = 100
-   for i in range(100) :
-      counter += 1
-      firstBet = random.randint(1,5)
-      num = random.randint(1,36)
-      sum -= firstBet
-      firstBetResult = Digits(firstBet,num)
-      if firstBetResult :
-         sum = sum + firstBetResult
-      if sum <= 0 :
-         break  
-   return counter
-
-def BetOnOdd() :
-   counter = 0
-   sum = 100
-   for i in range(100) :
-      counter += 1
-      secondBet = random.randint(1,5)
-      parity = random.randint(1,2)
-      sum -= secondBet
-      secondBetResult = EvenOdd(secondBet,parity)
-      if secondBetResult :
-         sum = sum + secondBetResult
-      if sum <= 0 :
-         break         
-   return counter
-
-def Digits(n,num) :
+def United(n,num) :
    randomBet = random.randint(0,36)
-   if randomBet == num :
+   if num == 50 or num == 51 :
+      ost = randomBet%2
+      ost1 = num % 2
+      if ost == ost1 :
+         n = n*2
+      else :
+         n = 0
+   elif randomBet == num :
       n = n*35
-      return n
    else :
-      return 0
+      n = 0
+   return n
 
-def EvenOdd(n,parity) :
-   randomBet = random.randint(0,36)
-   ost = randomBet%2
-   if parity == randomBet :
-      n = n*2
-      return n
-   else :
-      return 0
-
-print(BetOnDigits())
-print(BetOnOdd())
+def Bets() :
+   max = 5
+   min = 1
+   sum = 100
+   sum1 = 100
+   counter1 = 0
+   counter2 = 0
+   while sum > 0 and sum1 > 0:
+      firstBet = random.randint(min,max)
+      counter1 += 1
+      secondBet = random.randint(min,max)
+      counter2 += 1
+      num = random.randint(1,36)
+      parity = random.randint(50,51)
+      sum -= firstBet
+      sum1 -= secondBet
+      firstBetResult = United(firstBet,num)
+      secondBetResult = United(secondBet,parity)
+      sum += firstBetResult
+      sum1 += secondBetResult
+      if sum <= 4 and sum1 <= 4 :  
+         max = sum
+      elif sum1 <= 4 :
+         max = sum1
+      else :
+         if sum <= 0 :
+            print(counter1)
+            print("Деньги для первой ставки =",sum)
+         elif sum1 <= 0 :
+            print(counter2)
+            print("Деньги для второй ставки =",sum1)
+         
+Bets()
