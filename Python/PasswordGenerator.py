@@ -1,23 +1,25 @@
 # Написать програмку генерации паролей для пользователя.
 # Пользователь может выбрать какого типа символы нужны для пароля: цифры, буквы прописные/строчные, спецсимволы (можно выбрать какие).
 
-'D:\\Users\\Admin\Desktop\\config.txt'
 import random
-import string
 import sys
 import os.path
 
 defaultDict = {
    'length' : 10,
-   'symbols' : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   'symbols' : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!#%'
 }
 
 def Passwd(symbols,lengthPassword) : 
-   print('symbols =',symbols)
-   print('lengthPassword =',lengthPassword)
+   sum = ''
    elements = list(symbols)
-   password = ''.join([random.choice(elements) for i in range(0, int(lengthPassword))])
-   return password
+   for i in range(0, lengthPassword) :
+      sum += random.choice(elements)
+   saving = open(r'D:\Users\Admin\Desktop\Рабочий столик\forPG\PG.txt', 'a')
+   saving.write(sum)
+   saving.write('\n')
+   saving.close()
+   return sum
 
 def ReadFile(failPath) : 
    file = open(failPath, encoding='utf-8')
@@ -26,23 +28,28 @@ def ReadFile(failPath) :
       index = list1.index('=')
       if index != 0 :
          if list1[:index] in defaultDict :
-            defaultDict[list1[:index]] = list1[index+1:-1]
+            defaultDict[list1[:index]] = list1[index+1:]
    file.close()
-   print(Passwd(defaultDict['symbols'], defaultDict['length']))
+   password = Passwd(defaultDict['symbols'], int(defaultDict['length']))
+   return password
 
-a = len(sys.argv)
-print(a)
-if a == 1 :
-   print(Passwd(defaultDict['symbols'],defaultDict['length']))
-elif a == 2 :
-   b = os.path.isfile(sys.argv[1])
-   if b :
+lenInput = len(sys.argv)
+if lenInput == 2 :
+   if sys.argv[1] == 'default' :
+      print(Passwd(defaultDict['symbols'],defaultDict['length']))
+   elif os.path.isfile(sys.argv[1]) :
       failPath = sys.argv[1]
-      ReadFile(failPath)
-   else :
-      print('Параметров нет')
-      
-# failPath = r'D:\Users\Admin\Desktop\config.txt'
-# ReadFile(failPath)
-
-
+      print(ReadFile(failPath))
+   elif sys.argv[1] == 'help' :
+      print(""" Правила пользования генератором паролей.\n ----------------------------------------
+1. При вызове программы, вы можете указать путь к файлу, где будут содержаться ваши нстройки для пароля. 
+Содержимое файла должно выглядеть следующим образом:
+length=длина пароля
+symbols=символы,которые могут находиться в пароле
+Не используйте в конфигурационном файле пробелы слева и справа от знака '=' и после строки.\n-------------------------------------------------------------------------------
+2. Также можно использовать настройки по умолчанию, вызвав команду 'default'.
+3. Нельзя называть файлы 'default' и 'help'.
+------------------------------------------------------------------------------""")
+else :
+   print('Введены неверные данные.')
+   print('\rДля вывода правил пользования, в конце строки введите "help".','\n\r------------------------------------------------------------')
