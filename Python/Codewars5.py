@@ -4,17 +4,11 @@
 
 def dig_pow(n, p) :
    sum = 0
-   sum1 = ''
-   digits = []
-   while n > 0:   
-      digits.append(n % 10)
-      n = n // 10
-   digits = digits[::-1]
+   digits = list(str(n))  # Разделяю число на символы и добавляю в список
    for i in digits :
-      sum1 += str(i)
-      sum += i**p
+      sum += int(i)**p    # Возвожу в степень каждую цифру и суммирую 
       p += 1
-   result = sum//int(sum1)
+   result = sum//n        # Проверяю делится нацело или нет
    if result == 0 :
       return -1
    return result

@@ -63,8 +63,9 @@ import requests
 import pprint
 
 url = 'https://randomuser.me/api/?results=1'
-users = requests.get(url).json()
-
+result = requests.get(url)
+users = result.json()
+email = users.result.email
 pprint.pprint(users)
 
 #?===================================================================================================

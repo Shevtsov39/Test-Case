@@ -24,7 +24,5 @@ def function(array):
       array[i], array[m] = array[m], array[i]
    return array
 
-b = [3,66,9,5,64,1]
+b = [2,4,1,6,5]
 print(function(b))
-
-
