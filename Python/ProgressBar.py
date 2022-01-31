@@ -1,43 +1,28 @@
 # def ProgressBar(max,current) :
-#    #x = 'x'
-#    #dig = num/position
-#    n = 'x'*int(max/current)
-#    return n
+#     onePart = max/10
+#     g = onePart * (max/current)
+#     #n = 'x'*int(max/current)
+#     n = 'x'*int(g)
+#     return n
 
-# print(ProgressBar(500,490))
+# countX = ProgressBar(500,490)
+# print()
 
-# from time import sleep
-# from sys import stdout
+# for i in range(10):
+#     index += i
+    
+# bar.finish()
 
-# JUMP_LEFT_SEQ = '\u001b[100D'
-# DELAY = 1.1
+# from progress.bar import Bar
 
-# def loading():
-#     for i in range(0, 101):
-#         sleep(DELAY)
-#         print(JUMP_LEFT_SEQ, end='')
-#         print(f'Progress: {i:0>3}%', end='')
-#         stdout.flush()
-#     print()
+# with Bar('Processing', max=10) as bar:
+#     for i in range(5):
+#         # Do some work
+#         bar.next()
 
-# loading()
+# from tqdm import tqdm
+# import time
 
-import sys
-
-def progressbar(it, prefix="", size=60, file=sys.stdout):
-    count = len(it)
-    def show(j):
-        x = int(size*j/count)
-        file.write("%s[%s%s] %i/%i\r" % (prefix, "#"*x, "."*(size-x), j, count))
-        file.flush()        
-    show(0)
-    for i, item in enumerate(it):
-        yield item
-        show(i+1)
-    file.write("\n")
-    file.flush()
-
-import time
-
-for i in progressbar(range(15), "Computing: ", 40):
-    time.sleep(0.1) # any calculation you need
+# for i in tqdm(range(4,10)) :
+#     time.sleep(0.5)
+#     #index = 4

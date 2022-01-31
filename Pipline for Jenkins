@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label "Win10"
-    }
+    agent any
 
     stages {
         stage('Git Checkout') {
@@ -9,10 +7,20 @@ pipeline {
                 git credentialsId: 'github', url: 'https://github.com/Shevtsov39/Test-Case'
             }
         }
-        stage('Seup Robot') {
-            steps {
-                robot 'C:/tests/Primer'
+        // stage('Setup Robot') {
+        //     steps {
+        //         robot 'C:/tests/Primer'
+        //     }
+        // }
+        stage('Setup Robot') {
+            if (isUnix()) {
+                steps {
+                    robot 'C:/tests/Primer'
+                }
             }
+            else {
+                    robot 'C:/tests/Primer'
+                }
         }
         stage('Email Notification') {
             steps {
