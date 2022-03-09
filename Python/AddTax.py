@@ -8,10 +8,9 @@
 def addTax(price,tax) :
    taxArray = []
    for digit in price :
-      withTax = digit*(tax/100)+digit
+      withTax = digit*(tax/100+1)
       taxArray.append(withTax)
    return taxArray
-
 
 tax = 20
 price = [200,700,170,990,1560]
